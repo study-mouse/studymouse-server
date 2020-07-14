@@ -15,13 +15,15 @@ public class WordReqDto {
     private String korean;
     private String url;
     private String description;
+    private String color = "#1a1a1a";
 
-    public Word toEntity(){
+    public Word toEntity() {
         return Word.builder()
                 .english(this.english)
                 .korean(this.korean)
                 .url(this.url)
                 .description(this.description)
+                .color(this.color)
                 .build();
     }
 
