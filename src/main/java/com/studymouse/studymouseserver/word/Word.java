@@ -28,4 +28,6 @@ public class Word extends BaseTimeEntity{
     private String description;
 
     private String url;
+
+    private String color;
 }

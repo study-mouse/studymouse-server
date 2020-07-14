@@ -19,6 +19,7 @@ public class WordResDto {
     private String korean;
     private String description;
     private String url;
+    private String color;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -28,6 +29,7 @@ public class WordResDto {
                 .english(word.getEnglish())
                 .korean(word.getKorean())
                 .url(word.getUrl())
+                .color(word.getColor())
                 .description(word.getDescription())
                 .createdDate(word.getCreatedDate())
                 .modifiedDate(word.getModifiedDate())
