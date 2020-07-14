@@ -1,6 +1,8 @@
 *.properties
 *.yml
 
+generated
+
 HELP.md
 .gradle
 build/
