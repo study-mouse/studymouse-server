@@ -2,6 +2,7 @@ package com.studymouse.studymouseserver.word;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -11,5 +12,7 @@ import java.util.List;
 public interface WordRepositoryCustom {
 
     List<Word> findAllByPage(int page);
+
+    List<Word> findAllByDate(LocalDateTime startDate, LocalDateTime finishDate);
 
 }

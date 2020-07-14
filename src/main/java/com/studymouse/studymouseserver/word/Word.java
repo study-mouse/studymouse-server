@@ -11,7 +11,8 @@ import javax.persistence.Id;
  * Created by jyami on 2020/07/14
  */
 @NoArgsConstructor
-@AllArgsConstructor
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Entity
@@ -23,6 +24,8 @@ public class Word extends BaseTimeEntity{
     private String english;
 
     private String korean;
+
+    private String description;
 
     private String url;
 }

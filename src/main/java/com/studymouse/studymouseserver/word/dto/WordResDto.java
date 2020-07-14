@@ -14,17 +14,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class WordResDto {
 
+    private Long id;
     private String english;
     private String korean;
+    private String description;
     private String url;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
     public static WordResDto of(Word word) {
         return WordResDto.builder()
+                .id(word.getId())
                 .english(word.getEnglish())
                 .korean(word.getKorean())
                 .url(word.getUrl())
+                .description(word.getDescription())
                 .createdDate(word.getCreatedDate())
                 .modifiedDate(word.getModifiedDate())
                 .build();
