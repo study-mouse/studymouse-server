@@ -35,11 +35,11 @@ public class User {
     private Role role;
 
     @Builder
-    public User(Long id, String name, String email, String picture) {
-        this.id =id;
+    public User(String name, String email, String picture, Role role) {
         this.name =name;
         this.email = email;
         this.picture = picture;
+        this.role = role;
     }
 
     public String getRoleKey() {
