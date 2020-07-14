@@ -57,3 +57,11 @@ sourceSets {
 		}
 	}
 }
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
