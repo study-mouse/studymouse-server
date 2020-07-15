@@ -24,9 +24,10 @@ public class WordController {
     private final WordService wordService;
 
     @GetMapping("page")
-    public ResponseEntity<List<WordResDto>> getAllWord(@RequestParam("page") final int page,
+    public ResponseEntity<List<WordResDto>> getAllWord(@RequestParam(value = "page", required = false, defaultValue = "1") final int page,
+                                                       @RequestParam(value = "limit", required = false, defaultValue = "40") final int limit,
                                                        @RequestParam("sort") final SortType sortType) {
-        return ResponseEntity.ok().body(wordService.getAllWordAtPage(page, sortType));
+        return ResponseEntity.ok().body(wordService.getAllWordAtPage(page, limit, sortType));
     }
 
     @GetMapping("")
