@@ -25,8 +25,8 @@ public class WordService {
 
     private final WordRepository wordRepository;
 
-    public List<WordResDto> getAllWordAtPage(int page, SortType sortType) {
-        return wordRepository.findAllByPage(page, sortType)
+    public List<WordResDto> getAllWordAtPage(int page, int limit, SortType sortType) {
+        return wordRepository.findAllByPage(page, limit, sortType)
                 .stream()
                 .map(WordResDto::of)
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class WordService {
     }
 
     @Transactional
-    public void update(long id,WordUpdateDto wordUpdateDto) {
+    public void update(long id, WordUpdateDto wordUpdateDto) {
         Word word = wordRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 ID 값입니다."));
         word.setColor(wordUpdateDto.getColor());
