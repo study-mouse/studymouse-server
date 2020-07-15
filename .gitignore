@@ -1,12 +1,17 @@
 *.properties
 *.yml
 
+generated
+
 HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### query dsl ###
+generated
 
 ### STS ###
 .apt_generated
