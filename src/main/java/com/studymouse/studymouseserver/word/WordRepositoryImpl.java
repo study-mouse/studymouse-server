@@ -15,15 +15,14 @@ import static com.studymouse.studymouseserver.word.QWord.word;
 @RequiredArgsConstructor
 public class WordRepositoryImpl implements WordRepositoryCustom {
 
-    private static final int PAGE_LIMIT = 40;
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Word> findAllByPage(int page, SortType sortType) {
-        int offset = (page - 1) * PAGE_LIMIT;
+    public List<Word> findAllByPage(int page, int limit, SortType sortType) {
+        int offset = (page - 1) * limit;
 
         return queryFactory.selectFrom(word)
-                .limit(PAGE_LIMIT)
+                .limit(limit)
                 .orderBy(sortType.getOrderMethod())
                 .offset(offset).fetch();
     }

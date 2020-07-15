@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface WordRepositoryCustom {
 
-    List<Word> findAllByPage(int page, SortType sortType);
+    List<Word> findAllByPage(int page, int limit, SortType sortType);
 
     List<Word> findAllByDate(LocalDateTime startDate, LocalDateTime finishDate);
 
