@@ -20,12 +20,12 @@ class TimeUtilTest {
     public void getStartDate() {
         LocalDateTime startDate = TimeUtil.getStartDate("2020-07-14");
         assertAll(
-                ()->assertThat(startDate.getYear()).isEqualTo(2020),
-                ()->assertThat(startDate.getMonth()).isEqualTo(Month.JULY),
-                ()->assertThat(startDate.getDayOfMonth()).isEqualTo(14),
-                ()->assertThat(startDate.getHour()).isEqualTo(0),
-                ()->assertThat(startDate.getMinute()).isEqualTo(0),
-                ()->assertThat(startDate.getSecond()).isEqualTo(0)
+                () -> assertThat(startDate.getYear()).isEqualTo(2020),
+                () -> assertThat(startDate.getMonth()).isEqualTo(Month.JULY),
+                () -> assertThat(startDate.getDayOfMonth()).isEqualTo(14),
+                () -> assertThat(startDate.getHour()).isEqualTo(0),
+                () -> assertThat(startDate.getMinute()).isEqualTo(0),
+                () -> assertThat(startDate.getSecond()).isEqualTo(0)
         );
     }
 
@@ -33,13 +33,20 @@ class TimeUtilTest {
     public void getEndDate() {
         LocalDateTime startDate = TimeUtil.getEndDate("2020-07-14");
         assertAll(
-                ()->assertThat(startDate.getYear()).isEqualTo(2020),
-                ()->assertThat(startDate.getMonth()).isEqualTo(Month.JULY),
-                ()->assertThat(startDate.getDayOfMonth()).isEqualTo(14),
-                ()->assertThat(startDate.getHour()).isEqualTo(23),
-                ()->assertThat(startDate.getMinute()).isEqualTo(59),
-                ()->assertThat(startDate.getSecond()).isEqualTo(59)
+                () -> assertThat(startDate.getYear()).isEqualTo(2020),
+                () -> assertThat(startDate.getMonth()).isEqualTo(Month.JULY),
+                () -> assertThat(startDate.getDayOfMonth()).isEqualTo(14),
+                () -> assertThat(startDate.getHour()).isEqualTo(23),
+                () -> assertThat(startDate.getMinute()).isEqualTo(59),
+                () -> assertThat(startDate.getSecond()).isEqualTo(59)
         );
+    }
+
+    @Test
+    public void checkException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            LocalDateTime startDate = TimeUtil.getEndDate("2020-07-145");
+        });
     }
 
 }

@@ -31,8 +31,8 @@ public class WordController {
 
     @GetMapping("")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "startDate", value = "시작일(YYYY-MM-DD)", required = true),
-            @ApiImplicitParam(name = "endDate", value = "종료일(YYYY-MM-DD)", required = true),
+            @ApiImplicitParam(name = "startDate", value = "시작일(YYYY-MM-DD)", required = true, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "종료일(YYYY-MM-DD)", required = true, dataType = "string", paramType = "query"),
     })
     public ResponseEntity<List<WordResDto>> getAllFromDate(@RequestParam("startDate") final String startDate,
                                                            @RequestParam("endDate") final String endDate) {

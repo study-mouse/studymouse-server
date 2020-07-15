@@ -27,7 +27,7 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
@@ -43,6 +43,7 @@ dependencies {
 	}
 	testImplementation 'org.springframework.security:spring-security-test'
 
+//	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-mysql', version: '1.2.3.RELEASE'
 }
 
 test {
