@@ -2,10 +2,7 @@ package com.studymouse.studymouseserver.word;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by jyami on 2020/07/14
@@ -14,7 +11,6 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@Setter
 @Entity
 public class Word extends BaseTimeEntity{
     @Id
@@ -29,5 +25,11 @@ public class Word extends BaseTimeEntity{
 
     private String url;
 
+    @Setter
     private String color;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private ArchiveTag archiveTag = ArchiveTag.NOT_ARCHIVE;
 }

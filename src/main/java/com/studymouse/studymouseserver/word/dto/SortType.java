@@ -17,7 +17,7 @@ public enum SortType {
         this.orderMethod = orderMethod;
     }
 
-    public OrderSpecifier<String> getOrderMethod() {
+    public OrderSpecifier<String> getOrderSpecifier() {
         return orderMethod;
     }
 }

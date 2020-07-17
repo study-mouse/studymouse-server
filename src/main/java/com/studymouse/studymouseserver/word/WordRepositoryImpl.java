@@ -18,20 +18,22 @@ public class WordRepositoryImpl implements WordRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Word> findAllByPage(int page, int limit, SortType sortType) {
+    public List<Word> findAllByPage(int page, int limit, SortType sortType, ArchiveTag archiveTag) {
         int offset = (page - 1) * limit;
 
         return queryFactory.selectFrom(word)
+                .where(word.archiveTag.eq(archiveTag))
                 .limit(limit)
-                .orderBy(sortType.getOrderMethod())
-                .offset(offset).fetch();
+                .offset(offset)
+                .orderBy(sortType.getOrderSpecifier())
+                .fetch();
     }
 
     @Override
-    public List<Word> findAllByDate(LocalDateTime startDate, LocalDateTime finishDate) {
-
+    public List<Word> findAllByDate(LocalDateTime startDate, LocalDateTime finishDate, ArchiveTag archiveTag) {
         return queryFactory.selectFrom(word)
-                .where(word.modifiedDate.between(startDate, finishDate))
+                .where(word.archiveTag.eq(archiveTag))
+                .where(word.createdDate.between(startDate, finishDate))
                 .fetch();
     }
 }
