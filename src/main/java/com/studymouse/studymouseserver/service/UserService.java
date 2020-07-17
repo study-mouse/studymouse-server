@@ -18,16 +18,29 @@ public class UserService {
 
     @Transactional
     public void save(UserReqDto userReqDto) {
-        if(userRepository.findByEmail(userReqDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(userReqDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
         userRepository.save(userReqDto.toEntity());
     }
 
+    @Transactional
+    public boolean togglePushMail(final String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (!user.isPresent()) {
+            throw new IllegalArgumentException("회원 정보가 없습니다.");
+        }
+
+        User findUser = user.get();
+
+        return findUser.togglePushMail();
+    }
+
     public AccessUser login(final UserLoginReqDto userLoginReqDto) {
         Optional<User> findUser = userRepository.findByEmail(userLoginReqDto.getEmail());
 
-        if(!findUser.isPresent()) {
+        if (!findUser.isPresent()) {
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
 

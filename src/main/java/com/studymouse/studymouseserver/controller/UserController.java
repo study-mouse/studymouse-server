@@ -1,8 +1,11 @@
 package com.studymouse.studymouseserver.controller;
 
 import com.studymouse.studymouseserver.security.dto.AccessUser;
+import com.studymouse.studymouseserver.service.UserService;
 import com.studymouse.studymouseserver.user.Type;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import java.util.Objects;
 @RequestMapping("api/user")
 @RequiredArgsConstructor
 public class UserController {
+    private final UserService userService;
     private final HttpSession httpSession;
 
     @PostMapping("login/google")
@@ -39,5 +43,19 @@ public class UserController {
 
         httpSession.removeAttribute("user");
         return new RedirectView("");
+    }
+
+    @GetMapping("push")
+    public @ResponseBody
+    ResponseEntity<Boolean> togglePushMail() {
+        AccessUser accessUser = (AccessUser) httpSession.getAttribute("user");
+
+        if (Objects.isNull(accessUser)) {
+            throw new IllegalArgumentException("로그인 정보 X");
+        }
+
+        boolean toggleResult = userService.togglePushMail(accessUser.getEmail());
+
+        return ResponseEntity.ok(toggleResult);
     }
 }
