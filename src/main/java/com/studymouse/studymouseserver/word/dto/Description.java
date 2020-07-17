@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by jyami on 2020/07/15
+ * Created by jyami on 2020/07/18
  */
 @NoArgsConstructor
 @Getter
-public class WordUpdateDto {
-    private String color = "grey";
+public class Description {
+    private String partOfSpeech;
+    private String mean;
 }

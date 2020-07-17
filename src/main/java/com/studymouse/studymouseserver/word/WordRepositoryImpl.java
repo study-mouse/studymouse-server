@@ -1,6 +1,8 @@
 package com.studymouse.studymouseserver.word;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.studymouse.studymouseserver.util.MailDates;
+import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.dto.SortType;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,15 @@ public class WordRepositoryImpl implements WordRepositoryCustom {
         return queryFactory.selectFrom(word)
                 .where(word.archiveTag.eq(archiveTag))
                 .where(word.createdDate.between(startDate, finishDate))
+                .fetch();
+    }
+
+    @Override
+    public List<Word> findAllMailWords(LocalDateTime startDate, LocalDateTime endDate) {
+        return queryFactory.selectFrom(word)
+                .where(word.archiveTag.eq(ArchiveTag.NOT_ARCHIVE))
+                .where(word.createdDate.between(startDate, endDate))
+                .limit(3)
                 .fetch();
     }
 }

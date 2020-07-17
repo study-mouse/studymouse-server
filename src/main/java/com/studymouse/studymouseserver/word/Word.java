@@ -26,7 +26,8 @@ public class Word extends BaseTimeEntity{
     private String url;
 
     @Setter
-    private String color;
+    @Builder.Default
+    private String color = "grey";
 
     @Setter
     @Enumerated(EnumType.STRING)

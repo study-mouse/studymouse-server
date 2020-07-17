@@ -4,6 +4,8 @@ import com.studymouse.studymouseserver.word.Word;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Created by jyami on 2020/07/14
  */
@@ -14,17 +16,17 @@ public class WordReqDto {
     private String english;
     private String korean;
     private String url;
-    private String description;
-    private String color = "#1a1a1a";
+    private List<Description> description;
 
-    public Word toEntity() {
+    public Word toEntity(String descriptionJsonString) {
         return Word.builder()
                 .english(this.english)
                 .korean(this.korean)
                 .url(this.url)
-                .description(this.description)
-                .color(this.color)
+                .description(descriptionJsonString)
                 .build();
     }
+
+
 
 }
