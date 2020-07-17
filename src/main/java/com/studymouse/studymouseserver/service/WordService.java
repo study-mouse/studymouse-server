@@ -3,10 +3,7 @@ package com.studymouse.studymouseserver.service;
 import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.Word;
 import com.studymouse.studymouseserver.word.WordRepository;
-import com.studymouse.studymouseserver.word.dto.SortType;
-import com.studymouse.studymouseserver.word.dto.WordReqDto;
-import com.studymouse.studymouseserver.word.dto.WordResDto;
-import com.studymouse.studymouseserver.word.dto.WordUpdateDto;
+import com.studymouse.studymouseserver.word.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +22,16 @@ public class WordService {
 
     private final WordRepository wordRepository;
 
-    public List<WordResDto> getAllWordAtPage(int page, int limit, SortType sortType) {
-        return wordRepository.findAllByPage(page, limit, sortType)
+    public List<WordResDto> getAllWordAtPage(int page, int limit, SortType sortType, ViewType viewType) {
+        return wordRepository.findAllByPage(page, limit, sortType, viewType.getArchiveTag())
                 .stream()
                 .map(WordResDto::of)
                 .collect(Collectors.toList());
     }
 
-    public List<WordResDto> getAllWordBetweenDate(String startDate, String endDate) {
+    public List<WordResDto> getAllWordBetweenDate(String startDate, String endDate, ViewType viewType) {
 
-        return wordRepository.findAllByDate(TimeUtil.getStartDate(startDate), TimeUtil.getEndDate(endDate))
+        return wordRepository.findAllByDate(TimeUtil.getStartDate(startDate), TimeUtil.getEndDate(endDate), viewType.getArchiveTag())
                 .stream()
                 .map(WordResDto::of)
                 .collect(Collectors.toList());
@@ -46,18 +43,28 @@ public class WordService {
     }
 
     @Transactional
-    public void update(long id, WordUpdateDto wordUpdateDto) {
-        Word word = wordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 ID 값입니다."));
+    public void updateColor(long id, WordUpdateDto wordUpdateDto) {
+        Word word = getWordFromId(id);
         word.setColor(wordUpdateDto.getColor());
         wordRepository.save(word);
     }
 
     @Transactional
+    public void setArchive(long id) {
+        Word word = getWordFromId(id);
+        word.setArchiveTag(word.getArchiveTag().getOppositionArchive());
+        wordRepository.save(word);
+    }
+
+    @Transactional
     public void delete(long id) {
-        Word word = wordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 ID 값입니다."));
+        Word word = getWordFromId(id);
         wordRepository.delete(word);
+    }
+
+    private Word getWordFromId(long id) {
+        return wordRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 ID 값입니다."));
     }
 
 }
