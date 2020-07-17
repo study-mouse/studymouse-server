@@ -2,6 +2,7 @@ package com.studymouse.studymouseserver.security;
 
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import com.studymouse.studymouseserver.security.dto.OAuthAttributes;
+import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.Collections;
 public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
+    private final AccessUserManager accessUserManager;
 
     @Override
     public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -38,7 +39,7 @@ public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserReque
 
         User user = save(attributes);
 
-        httpSession.setAttribute("user", new AccessUser(user));
+        accessUserManager.saveSession(new AccessUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),

@@ -1,6 +1,7 @@
 package com.studymouse.studymouseserver.controller;
 
 import com.studymouse.studymouseserver.security.dto.AccessUser;
+import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.service.UserService;
 import com.studymouse.studymouseserver.user.Type;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -22,6 +23,7 @@ import java.util.Objects;
 public class UserController {
     private final UserService userService;
     private final HttpSession httpSession;
+    private final AccessUserManager accessUserManager;
 
     @PostMapping("login/google")
     public String loginGoogle() {
@@ -31,11 +33,7 @@ public class UserController {
     @GetMapping("logout")
     public @ResponseBody
     RedirectView logout() {
-        AccessUser accessUser = (AccessUser) httpSession.getAttribute("user");
-
-        if (Objects.isNull(accessUser)) {
-            throw new IllegalArgumentException("로그인 정보 X");
-        }
+        AccessUser accessUser = accessUserManager.getAccessUser();
 
         if (accessUser.getType() == Type.SOCIAL) {
             return new RedirectView("sociallogout");
@@ -48,14 +46,18 @@ public class UserController {
     @GetMapping("push")
     public @ResponseBody
     ResponseEntity<Boolean> togglePushMail() {
-        AccessUser accessUser = (AccessUser) httpSession.getAttribute("user");
-
-        if (Objects.isNull(accessUser)) {
-            throw new IllegalArgumentException("로그인 정보 X");
-        }
+        AccessUser accessUser = accessUserManager.getAccessUser();
 
         boolean toggleResult = userService.togglePushMail(accessUser.getEmail());
 
         return ResponseEntity.ok(toggleResult);
+    }
+
+    @GetMapping("")
+    public @ResponseBody
+    ResponseEntity<AccessUser> userMain() {
+        AccessUser accessUser = accessUserManager.getAccessUser();
+
+        return ResponseEntity.ok(accessUser);
     }
 }
