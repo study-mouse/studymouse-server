@@ -31,7 +31,7 @@ public class MailService {
 
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
-    private final WordRepository wordRepository;
+    private final WordService wordService;
 
     public void sendSimpleMessage(String to) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
@@ -40,30 +40,11 @@ public class MailService {
         helper.setSubject("[스터디마우스] 오늘의 단어장 - 2020/07/18");
 
         Context context = new Context();
-        context.setVariables(Collections.unmodifiableMap(getAllWordBetweenDate()));
+        context.setVariables(Collections.unmodifiableMap(wordService.getAllWordBetweenDate()));
         String html = templateEngine.process("index", context);
 
         helper.setText(html, true);
         emailSender.send(message);
-    }
-
-    @Transactional
-    public Map<String, List<WordResDto>> getAllWordBetweenDate() {
-
-        LocalDate now = LocalDate.now();
-//        LocalDate now = LocalDate.of(2020, Month.JULY, 25);
-
-        Map<String, List<WordResDto>> map = new HashMap<>();
-
-        for (MailDates mailDates : MailDates.values()) {
-            List<WordResDto> collect = wordRepository.findAllMailWords(mailDates.getStartTime(now), mailDates.getEndTime(now))
-                    .stream()
-                    .map(WordResDto::of)
-                    .collect(Collectors.toList());
-            map.put(mailDates.toString(), collect);
-        }
-
-        return map;
     }
 
 }
