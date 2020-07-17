@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class WordUpdateDto {
-    private String color = "1a1a1a";
+    private String color = "grey";
 }

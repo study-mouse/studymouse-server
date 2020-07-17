@@ -15,7 +15,7 @@ public class WordReqDto {
     private String korean;
     private String url;
     private String description;
-    private String color = "#1a1a1a";
+    private String color = "grey";
 
     public Word toEntity() {
         return Word.builder()
@@ -23,7 +23,6 @@ public class WordReqDto {
                 .korean(this.korean)
                 .url(this.url)
                 .description(this.description)
-                .color(this.color)
                 .build();
     }
 

@@ -1,15 +1,14 @@
 package com.studymouse.studymouseserver.controller;
 
 import com.studymouse.studymouseserver.service.WordService;
+import com.studymouse.studymouseserver.word.Word;
 import com.studymouse.studymouseserver.word.dto.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -54,7 +53,7 @@ public class WordController {
     }
 
     @PatchMapping("archive/{id}")
-    public ResponseEntity<Void> setArchive(@PathVariable final long id){
+    public ResponseEntity<Void> setArchive(@PathVariable final long id) {
         wordService.setArchive(id);
         return ResponseEntity.ok().build();
     }

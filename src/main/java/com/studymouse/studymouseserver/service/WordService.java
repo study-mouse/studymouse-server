@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.service;
 
+import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.Word;
 import com.studymouse.studymouseserver.word.WordRepository;
@@ -8,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
