@@ -3,10 +3,12 @@ package com.studymouse.studymouseserver.security;
 import com.studymouse.studymouseserver.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+
 
 @Configuration
 public class SecurityConfig {
@@ -24,18 +26,17 @@ public class SecurityConfig {
                     .headers().frameOptions().disable()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/word/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                    .antMatchers("/api/word/**", "/api/user/logout", "/api/user/push").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                     .anyRequest().permitAll()
                     .and()
                     .logout()
-                    .logoutUrl("/api/user/sociallogout")
+                    .logoutUrl("/api/user/logout")
                     .invalidateHttpSession(true)
-                    .logoutSuccessUrl("/api/user")
+                    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                     .permitAll()
                     .and()
                     .oauth2Login()
                     .defaultSuccessUrl("/api/user")
-                    .failureUrl("/api/user/loginFail")
                     .userInfoEndpoint()
                     .userService(customOAuthUserService);
         }
