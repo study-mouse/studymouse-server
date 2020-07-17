@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.word.dto;
 
+import com.studymouse.studymouseserver.word.ArchiveTag;
 import com.studymouse.studymouseserver.word.Word;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class WordResDto {
     private List<Description> description;
     private String url;
     private String color;
+    private ArchiveTag archiveTag;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -30,6 +32,7 @@ public class WordResDto {
                 .english(word.getEnglish())
                 .korean(word.getKorean())
                 .url(word.getUrl())
+                .archiveTag(word.getArchiveTag())
                 .color(word.getColor())
                 .description(description)
                 .createdDate(word.getCreatedDate())
