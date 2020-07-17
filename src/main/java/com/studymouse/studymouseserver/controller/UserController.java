@@ -3,6 +3,7 @@ package com.studymouse.studymouseserver.controller;
 import com.studymouse.studymouseserver.security.CustomOAuthUserService;
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import com.studymouse.studymouseserver.service.UserService;
+import com.studymouse.studymouseserver.user.Type;
 import com.studymouse.studymouseserver.user.dto.UserLoginReqDto;
 import com.studymouse.studymouseserver.user.dto.UserReqDto;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/user")
@@ -39,9 +42,18 @@ public class UserController {
     }
 
     @GetMapping("logout")
-    public ResponseEntity<Void> logout() {
-        httpSession.removeAttribute("user");
+    public RedirectView logout() {
+        AccessUser accessUser = (AccessUser) httpSession.getAttribute("user");
 
-        return ResponseEntity.ok().build();
+        if (Objects.isNull(accessUser)) {
+            throw new IllegalArgumentException("로그인 정보 X");
+        }
+
+        if (accessUser.getType() == Type.SOCIAL) {
+            return new RedirectView("sociallogout");
+        }
+
+        httpSession.removeAttribute("user");
+        return new RedirectView("");
     }
 }

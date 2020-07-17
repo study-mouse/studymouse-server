@@ -34,15 +34,24 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
+
     @Builder
-    public User(String name, String email, String picture, Role role) {
-        this.name =name;
+    public User(String name, String email, String picture, Role role, Type type) {
+        this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
+        this.type = type;
     }
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public Type getType() {
+        return type;
     }
 }

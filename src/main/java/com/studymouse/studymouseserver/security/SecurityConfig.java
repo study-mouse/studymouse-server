@@ -27,9 +27,15 @@ public class SecurityConfig {
                     .antMatchers("/api/word/**").hasRole(Role.USER.name())
                     .anyRequest().permitAll()
                     .and()
-                    .logout().logoutSuccessUrl("/")
+                    .logout()
+                    .logoutUrl("/api/user/sociallogout")
+                    .invalidateHttpSession(true)
+                    .logoutSuccessUrl("/api/user")
+                    .permitAll()
                     .and()
                     .oauth2Login()
+                    .defaultSuccessUrl("/api/user")
+                    .failureUrl("/api/user/loginFail")
                     .userInfoEndpoint()
                     .userService(customOAuthUserService);
         }

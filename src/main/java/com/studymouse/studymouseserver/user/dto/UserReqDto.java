@@ -1,6 +1,7 @@
 package com.studymouse.studymouseserver.user.dto;
 
 import com.studymouse.studymouseserver.user.Role;
+import com.studymouse.studymouseserver.user.Type;
 import com.studymouse.studymouseserver.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class UserReqDto {
                 .email(this.email)
                 .picture(this.picture)
                 .role(Role.USER)
+                .type(Type.DEFAULT)
                 .build();
     }
 }
