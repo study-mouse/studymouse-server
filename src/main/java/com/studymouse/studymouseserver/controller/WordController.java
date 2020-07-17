@@ -3,6 +3,7 @@ package com.studymouse.studymouseserver.controller;
 import com.studymouse.studymouseserver.service.WordService;
 import com.studymouse.studymouseserver.util.ResponseDto;
 import com.studymouse.studymouseserver.util.ResponseMessage;
+import com.studymouse.studymouseserver.word.Word;
 import com.studymouse.studymouseserver.word.dto.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -65,9 +67,9 @@ public class WordController {
 
     @PatchMapping("archive/{id}")
     public ResponseEntity<ResponseDto<?>> setArchive(@PathVariable final long id) {
-        long savedId = wordService.setArchive(id);
-        return ResponseEntity.ok()
-                .body(ResponseDto.of(HttpStatus.OK, ResponseMessage.wordIdFormat(SUCCESS_CHANGE_ARCHIVE_STATE, savedId)));
+        Word word = wordService.setArchive(id);
+        return ResponseEntity.ok().body(ResponseDto.of(HttpStatus.OK,
+                ResponseMessage.wordIdFormat(SUCCESS_CHANGE_ARCHIVE_STATE, word.getId()), word.getArchiveTag()));
     }
 
     @DeleteMapping("{id}")

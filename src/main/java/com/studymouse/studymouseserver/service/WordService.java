@@ -85,10 +85,10 @@ public class WordService {
     }
 
     @Transactional
-    public long setArchive(long id) {
+    public Word setArchive(long id) {
         Word word = getWordFromId(id);
         word.setArchiveTag(word.getArchiveTag().getOppositionArchive());
-        return wordRepository.save(word).getId();
+        return wordRepository.save(word);
     }
 
     @Transactional
