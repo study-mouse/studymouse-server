@@ -37,10 +37,10 @@ public class MailService {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(to);
-        helper.setSubject("[스터디마우스] 오늘의 단어장 - 2020/07/18");
+        helper.setSubject("[스터디마우스] 오늘의 단어장 : " + LocalDate.now().toString());
 
         Context context = new Context();
-        context.setVariables(Collections.unmodifiableMap(wordService.getAllWordBetweenDate()));
+        context.setVariable("list", wordService.getAllWordBetweenDate());
         String html = templateEngine.process("index", context);
 
         helper.setText(html, true);

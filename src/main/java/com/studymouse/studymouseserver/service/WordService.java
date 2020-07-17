@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -43,18 +43,19 @@ public class WordService {
     }
 
     @Transactional
-    public Map<String, List<WordResDto>> getAllWordBetweenDate() {
+    public List<MailResponseDto> getAllWordBetweenDate() {
         LocalDate now = LocalDate.now();
-
-        Map<String, List<WordResDto>> map = new HashMap<>();
+        List<MailResponseDto> mailResponseDtos = new ArrayList<>();
         for (MailDates mailDates : MailDates.values()) {
-            List<WordResDto> collect = wordRepository.findAllMailWords(mailDates.getStartTime(now), mailDates.getEndTime(now))
-                    .stream()
-                    .map(this::writeWordResDto)
-                    .collect(Collectors.toList());
-            map.put(mailDates.toString(), collect);
+            List<Word> allMailWords = wordRepository.findAllMailWords(mailDates.getStartTime(now), mailDates.getEndTime(now));
+            List<MailResponseDto.SmallWordCard> collect =
+                            allMailWords
+                            .stream()
+                            .map(MailResponseDto.SmallWordCard::of)
+                            .collect(Collectors.toList());
+            mailResponseDtos.add(new MailResponseDto(mailDates.getText(), collect));
         }
-        return map;
+        return mailResponseDtos;
     }
 
     private WordResDto writeWordResDto(Word m) {
