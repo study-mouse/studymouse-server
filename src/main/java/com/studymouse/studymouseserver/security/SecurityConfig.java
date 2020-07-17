@@ -24,7 +24,7 @@ public class SecurityConfig {
                     .headers().frameOptions().disable()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/word/**").hasRole(Role.USER.name())
+                    .antMatchers("/api/word/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                     .anyRequest().permitAll()
                     .and()
                     .logout()
