@@ -1,12 +1,12 @@
 package com.studymouse.studymouseserver.service;
 
 //import com.studymouse.studymouseserver.security.LoginUser;
+
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.user.UserRepository;
 import com.studymouse.studymouseserver.user.dto.UserInfoResDto;
-import com.studymouse.studymouseserver.user.dto.UserLoginReqDto;
 import com.studymouse.studymouseserver.user.dto.UserMailResDto;
 import com.studymouse.studymouseserver.user.dto.UserReqDto;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final AccessUserManager accessUserManager;
 
     @Transactional
-    public void save(UserReqDto userReqDto) {
-        if (userRepository.findByEmail(userReqDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 가입된 회원입니다.");
-        }
-        userRepository.save(userReqDto.toEntity());
+    public UserInfoResDto login(UserReqDto userReqDto) {
+        User user = userRepository.findByEmail(userReqDto.getEmail())
+                .orElseGet(()->userRepository.save(userReqDto.toEntity()));
+        accessUserManager.saveSession(new AccessUser(user));
+        return new UserInfoResDto(user);
+    }
+
+    public void logout() {
+        accessUserManager.deleteSession();
     }
 
     @Transactional
@@ -39,14 +44,6 @@ public class UserService {
         }
         User findUser = user.get();
         return findUser.togglePushMail();
-    }
-
-    public AccessUser login(final UserLoginReqDto userLoginReqDto) {
-        Optional<User> findUser = userRepository.findByEmail(userLoginReqDto.getEmail());
-        if (!findUser.isPresent()) {
-            throw new IllegalArgumentException("이미 가입된 회원입니다.");
-        }
-        return new AccessUser(findUser.get());
     }
 
     public List<UserMailResDto> findAllPushMailsUser() {

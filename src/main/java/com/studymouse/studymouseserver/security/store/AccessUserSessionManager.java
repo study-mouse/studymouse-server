@@ -44,8 +44,8 @@ public class AccessUserSessionManager implements AccessUserManager {
     public void deleteSession() {
         if (hasAuthentication()) {
             httpSession.removeAttribute(USER_SESSION_KEY);
+            return;
         }
-
         throw new IllegalArgumentException("로그인 정보가 없습니다.");
     }
 }
