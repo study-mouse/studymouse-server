@@ -3,6 +3,7 @@ package com.studymouse.studymouseserver.service;
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.user.UserRepository;
+import com.studymouse.studymouseserver.user.dto.UserInfoResDto;
 import com.studymouse.studymouseserver.user.dto.UserLoginReqDto;
 import com.studymouse.studymouseserver.user.dto.UserReqDto;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,17 @@ public class UserService {
         User findUser = user.get();
 
         return findUser.togglePushMail();
+    }
+
+    @Transactional
+    public UserInfoResDto findByEmail(String email) {
+        Optional<User> findUser = userRepository.findByEmail(email);
+
+        if (!findUser.isPresent()) {
+            throw new IllegalArgumentException("회원 정보가 없습니다.");
+        }
+
+        return new UserInfoResDto(findUser.get());
     }
 
     public AccessUser login(final UserLoginReqDto userLoginReqDto) {
