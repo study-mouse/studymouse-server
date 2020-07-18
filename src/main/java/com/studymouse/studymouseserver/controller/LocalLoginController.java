@@ -34,7 +34,7 @@ public class LocalLoginController {
 
     @PostMapping("logout")
     public ResponseEntity<ResponseDto> loginWithGoogle(){
-        userService.logout();
+//        userService.logout();
         return ResponseEntity.ok().body(ResponseDto.of(HttpStatus.OK, "로그아웃 완료"));
     }
 }

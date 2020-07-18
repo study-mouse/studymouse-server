@@ -3,10 +3,12 @@ package com.studymouse.studymouseserver.security.dto;
 import com.studymouse.studymouseserver.user.Type;
 import com.studymouse.studymouseserver.user.User;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @Getter
+@ToString
 public class AccessUser implements Serializable {
 
     private String name;

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studymouse.studymouseserver.exception.NotAccessUserException;
 import com.studymouse.studymouseserver.exception.ParsingException;
 //import com.studymouse.studymouseserver.security.LoginUser;
-import com.studymouse.studymouseserver.security.dto.AccessUser;
-import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.util.TimeUtil;
@@ -34,19 +32,18 @@ public class WordService {
     private final WordRepository wordRepository;
     private final ObjectMapper objectMapper;
     private final UserService userService;
-    private final AccessUserManager manager;
 
     public List<WordResDto> getAllWordAtPage(int page, int limit, SortType sortType, ViewType viewType) {
 //        User nowAcessUser = userService.getNowAccessUser(accessUser);
-        User nowAcessUser =userService.getNowAccessUser(manager.getAccessUser());
+        User nowAcessUser = userService.getNowAccessUser();
         return wordRepository.findAllByPage(nowAcessUser, page, limit, sortType, viewType.getArchiveTag())
                 .stream()
                 .map(this::writeWordResDto)
                 .collect(Collectors.toList());
     }
 
-    public List<WordResDto> getAllWordBetweenDate(AccessUser accessUser, String startDate, String endDate, ViewType viewType) {
-        User nowAcessUser = userService.getNowAccessUser(accessUser);
+    public List<WordResDto> getAllWordBetweenDate(String startDate, String endDate, ViewType viewType) {
+        User nowAcessUser = userService.getNowAccessUser();
         return wordRepository.findAllByDate(nowAcessUser, TimeUtil.getStartDate(startDate), TimeUtil.getEndDate(endDate), viewType.getArchiveTag())
                 .stream()
                 .map(this::writeWordResDto)
@@ -80,9 +77,9 @@ public class WordService {
     }
 
     @Transactional
-    public long save(WordReqDto wordReqDto, AccessUser accessUser) {
+    public long save(WordReqDto wordReqDto) {
         try {
-            User nowAcessUser = userService.getNowAccessUser(accessUser);
+            User nowAcessUser = userService.getNowAccessUser();
             String descriptionJsonString = objectMapper.writeValueAsString(wordReqDto.getDescription());
             return wordRepository.save(wordReqDto.toEntity(descriptionJsonString, nowAcessUser)).getId();
         } catch (JsonProcessingException e) {
@@ -91,25 +88,25 @@ public class WordService {
     }
 
     @Transactional
-    public long updateColor(long id, WordUpdateDto wordUpdateDto, AccessUser accessUser) {
+    public long updateColor(long id, WordUpdateDto wordUpdateDto) {
         Word word = getWordFromId(id);
-        checkUserAuthority(word, userService.getNowAccessUser(accessUser));
+        checkUserAuthority(word, userService.getNowAccessUser());
         word.setColor(wordUpdateDto.getColor());
         return wordRepository.save(word).getId();
     }
 
     @Transactional
-    public Word setArchive(long id, AccessUser accessUser) {
+    public Word setArchive(long id) {
         Word word = getWordFromId(id);
-        checkUserAuthority(word, userService.getNowAccessUser(accessUser));
+        checkUserAuthority(word, userService.getNowAccessUser());
         word.setArchiveTag(word.getArchiveTag().getOppositionArchive());
         return wordRepository.save(word);
     }
 
     @Transactional
-    public void delete(long id, AccessUser accessUser) {
+    public void delete(long id) {
         Word word = getWordFromId(id);
-        checkUserAuthority(word, userService.getNowAccessUser(accessUser));
+        checkUserAuthority(word, userService.getNowAccessUser());
         wordRepository.delete(word);
     }
 

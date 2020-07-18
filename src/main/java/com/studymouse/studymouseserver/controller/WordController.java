@@ -1,7 +1,6 @@
 package com.studymouse.studymouseserver.controller;
 
-import com.studymouse.studymouseserver.security.LoginUser;
-import com.studymouse.studymouseserver.security.dto.AccessUser;
+
 import com.studymouse.studymouseserver.service.WordService;
 import com.studymouse.studymouseserver.util.ResponseDto;
 import com.studymouse.studymouseserver.util.ResponseMessage;
@@ -46,42 +45,37 @@ public class WordController {
     @GetMapping("{viewType}")
     public ResponseEntity<ResponseDto<?>> getAllFromDate(@RequestParam("startDate") final String startDate,
                                                          @RequestParam("endDate") final String endDate,
-                                                         @PathVariable final ViewType viewType,
-                                                         @LoginUser AccessUser accessUser) {
-        List<WordResDto> allWordBetweenDate = wordService.getAllWordBetweenDate(accessUser, startDate, endDate, viewType);
+                                                         @PathVariable final ViewType viewType) {
+        List<WordResDto> allWordBetweenDate = wordService.getAllWordBetweenDate(startDate, endDate, viewType);
         return ResponseEntity.ok()
                 .body(ResponseDto.of(HttpStatus.OK, ResponseMessage.SUCCESS_WORD_SEARCH, allWordBetweenDate));
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDto<?>> saveWord(@RequestBody final WordReqDto wordReqDto,
-                                                   @LoginUser AccessUser accessUser) {
-        long savedId = wordService.save(wordReqDto, accessUser);
+    public ResponseEntity<ResponseDto<?>> saveWord(@RequestBody final WordReqDto wordReqDto) {
+        long savedId = wordService.save(wordReqDto);
         return ResponseEntity.ok()
                 .body(ResponseDto.of(HttpStatus.OK, ResponseMessage.wordIdFormat(SUCCESS_WORD_SAVED, savedId)));
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<ResponseDto<?>> updateWordColor(@PathVariable final long id,
-                                                          @RequestBody WordUpdateDto wordUpdateDto,
-                                                          @LoginUser AccessUser accessUser) {
-        long savedId = wordService.updateColor(id, wordUpdateDto, accessUser);
+                                                          @RequestBody WordUpdateDto wordUpdateDto) {
+        long savedId = wordService.updateColor(id, wordUpdateDto);
         return ResponseEntity.ok()
                 .body(ResponseDto.of(HttpStatus.OK, ResponseMessage.wordIdFormat(SUCCESS_COLOR_CHANGE, savedId)));
     }
 
     @PatchMapping("archive/{id}")
-    public ResponseEntity<ResponseDto<?>> setArchive(@PathVariable final long id,
-                                                     @LoginUser AccessUser accessUser) {
-        Word word = wordService.setArchive(id, accessUser);
+    public ResponseEntity<ResponseDto<?>> setArchive(@PathVariable final long id) {
+        Word word = wordService.setArchive(id);
         return ResponseEntity.ok().body(ResponseDto.of(HttpStatus.OK,
                 ResponseMessage.wordIdFormat(SUCCESS_CHANGE_ARCHIVE_STATE, word.getId()), word.getArchiveTag()));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<ResponseDto<?>> deleteWord(@PathVariable final long id,
-                                                     @LoginUser AccessUser accessUser) {
-        wordService.delete(id, accessUser);
+    public ResponseEntity<ResponseDto<?>> deleteWord(@PathVariable final long id) {
+        wordService.delete(id);
         return ResponseEntity.ok().body(ResponseDto.of(HttpStatus.OK, SUCCESS_WORD_DELETE));
     }
 
