@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.word;
 
+import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.dto.SortType;
@@ -15,10 +16,10 @@ import java.util.List;
 @Repository
 public interface WordRepositoryCustom {
 
-    List<Word> findAllByPage(int page, int limit, SortType sortType, ArchiveTag archiveTag);
+    List<Word> findAllByPage(User user, int page, int limit, SortType sortType, ArchiveTag archiveTag);
 
-    List<Word> findAllByDate(LocalDateTime startDate, LocalDateTime finishDate, ArchiveTag archiveTag);
+    List<Word> findAllByDate(User user, LocalDateTime startDate, LocalDateTime finishDate, ArchiveTag archiveTag);
 
-    List<Word> findAllMailWords(LocalDateTime startDate, LocalDateTime endDate);
+    List<Word> findAllMailWords(User user, LocalDateTime startDate, LocalDateTime endDate);
 
 }

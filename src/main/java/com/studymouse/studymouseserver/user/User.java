@@ -1,16 +1,13 @@
 package com.studymouse.studymouseserver.user;
 
+import com.studymouse.studymouseserver.word.Word;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,6 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -41,8 +39,11 @@ public class User {
     @Column(nullable = false)
     private Type type;
 
+    @OneToMany(mappedBy = "user")
+    private List<Word> words = Collections.emptyList();
+
     @Builder
-    public User(String name, String email, String picture, Role role, Type type) {
+    private User(String name, String email, String picture, Role role, Type type) {
         this.name = name;
         this.email = email;
         this.picture = picture;
