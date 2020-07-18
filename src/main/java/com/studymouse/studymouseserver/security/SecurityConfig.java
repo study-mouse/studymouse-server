@@ -32,6 +32,7 @@ public class SecurityConfig {
                     .logout()
                     .logoutUrl("/api/user/logout")
                     .invalidateHttpSession(true)
+
                     .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                     .permitAll()
                     .and()

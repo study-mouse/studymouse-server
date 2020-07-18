@@ -2,6 +2,7 @@ package com.studymouse.studymouseserver.security.store;
 
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AccessUserSessionManager implements AccessUserManager {

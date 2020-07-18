@@ -1,10 +1,12 @@
 package com.studymouse.studymouseserver.service;
 
+import com.studymouse.studymouseserver.user.dto.UserMailResDto;
 import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.word.Word;
 import com.studymouse.studymouseserver.word.WordRepository;
 import com.studymouse.studymouseserver.word.dto.WordResDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Created by jyami on 2020/07/17
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -33,18 +36,23 @@ public class MailService {
     private final SpringTemplateEngine templateEngine;
     private final WordService wordService;
 
-    public void sendSimpleMessage(String to) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(to);
-        helper.setSubject("[스터디마우스] 오늘의 단어장 : " + LocalDate.now().toString());
+    public void sendSimpleMessage(UserMailResDto resDto) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(resDto.getEmail());
+            helper.setSubject("[스터디마우스] 오늘의 단어장 : " + LocalDate.now().toString());
 
-        Context context = new Context();
-        context.setVariable("list", wordService.getAllWordBetweenDate());
-        String html = templateEngine.process("index", context);
+            Context context = new Context();
+            context.setVariable("list", wordService.getAllWordMailDate(resDto.getId()));
+            String html = templateEngine.process("index", context);
 
-        helper.setText(html, true);
-        emailSender.send(message);
+            helper.setText(html, true);
+            emailSender.send(message);
+            log.info(resDto.toString() + " message send success");
+        } catch (MessagingException e) {
+            log.error(resDto.toString());
+        }
     }
 
 }

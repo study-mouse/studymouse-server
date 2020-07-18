@@ -1,6 +1,7 @@
 package com.studymouse.studymouseserver.controller;
 
 import com.studymouse.studymouseserver.service.MailService;
+import com.studymouse.studymouseserver.service.UserService;
 import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.word.dto.MailResponseDto;
 import com.studymouse.studymouseserver.word.dto.WordResDto;
@@ -27,12 +28,13 @@ import java.util.stream.Collectors;
 @Controller
 public class MailController {
     private final MailService mailService;
+    private final UserService userService;
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public @ResponseBody
-    ResponseEntity<Void> sendMessage() throws MessagingException {
-        mailService.sendSimpleMessage("mor2222@naver.com");
-        log.info("cron job exe");
+    ResponseEntity<Void> sendMessage() {
+        userService.findAllPushMailsUser()
+                .forEach(mailService::sendSimpleMessage);
         return ResponseEntity.ok().build();
     }
 
