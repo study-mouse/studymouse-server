@@ -2,7 +2,9 @@ package com.studymouse.studymouseserver.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.studymouse.studymouseserver.exception.NotAccessUserException;
 import com.studymouse.studymouseserver.exception.ParsingException;
+import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.util.MailDates;
 import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.Word;
@@ -27,16 +29,19 @@ public class WordService {
 
     private final WordRepository wordRepository;
     private final ObjectMapper objectMapper;
+    private final UserService userService;
 
     public List<WordResDto> getAllWordAtPage(int page, int limit, SortType sortType, ViewType viewType) {
-        return wordRepository.findAllByPage(page, limit, sortType, viewType.getArchiveTag())
+        User nowAcessUser = userService.getNowAccessUser();
+        return wordRepository.findAllByPage(nowAcessUser, page, limit, sortType, viewType.getArchiveTag())
                 .stream()
                 .map(this::writeWordResDto)
                 .collect(Collectors.toList());
     }
 
     public List<WordResDto> getAllWordBetweenDate(String startDate, String endDate, ViewType viewType) {
-        return wordRepository.findAllByDate(TimeUtil.getStartDate(startDate), TimeUtil.getEndDate(endDate), viewType.getArchiveTag())
+        User nowAcessUser = userService.getNowAccessUser();
+        return wordRepository.findAllByDate(nowAcessUser, TimeUtil.getStartDate(startDate), TimeUtil.getEndDate(endDate), viewType.getArchiveTag())
                 .stream()
                 .map(this::writeWordResDto)
                 .collect(Collectors.toList());
@@ -45,9 +50,10 @@ public class WordService {
     @Transactional
     public List<MailResponseDto> getAllWordBetweenDate() {
         LocalDate now = LocalDate.now();
+        User nowAcessUser = userService.getNowAccessUser();
         List<MailResponseDto> mailResponseDtos = new ArrayList<>();
         for (MailDates mailDates : MailDates.values()) {
-            List<Word> allMailWords = wordRepository.findAllMailWords(mailDates.getStartTime(now), mailDates.getEndTime(now));
+            List<Word> allMailWords = wordRepository.findAllMailWords(nowAcessUser, mailDates.getStartTime(now), mailDates.getEndTime(now));
             List<MailResponseDto.SmallWordCard> collect =
                             allMailWords
                             .stream()
@@ -72,7 +78,7 @@ public class WordService {
     public long save(WordReqDto wordReqDto) {
         try {
             String descriptionJsonString = objectMapper.writeValueAsString(wordReqDto.getDescription());
-            return wordRepository.save(wordReqDto.toEntity(descriptionJsonString)).getId();
+            return wordRepository.save(wordReqDto.toEntity(descriptionJsonString, userService.getNowAccessUser())).getId();
         } catch (JsonProcessingException e) {
             throw new ParsingException(e.getMessage(), e);
         }
@@ -81,6 +87,7 @@ public class WordService {
     @Transactional
     public long updateColor(long id, WordUpdateDto wordUpdateDto) {
         Word word = getWordFromId(id);
+        checkUserAuthority(word);
         word.setColor(wordUpdateDto.getColor());
         return wordRepository.save(word).getId();
     }
@@ -88,6 +95,7 @@ public class WordService {
     @Transactional
     public Word setArchive(long id) {
         Word word = getWordFromId(id);
+        checkUserAuthority(word);
         word.setArchiveTag(word.getArchiveTag().getOppositionArchive());
         return wordRepository.save(word);
     }
@@ -95,7 +103,14 @@ public class WordService {
     @Transactional
     public void delete(long id) {
         Word word = getWordFromId(id);
+        checkUserAuthority(word);
         wordRepository.delete(word);
+    }
+
+    private void checkUserAuthority(Word word) {
+        if (!word.getUser().getId().equals(userService.getNowAccessUser().getId())) {
+            throw new NotAccessUserException("해당유저가 접근할 수 없는 단어입니다");
+        }
     }
 
     private Word getWordFromId(long id) {

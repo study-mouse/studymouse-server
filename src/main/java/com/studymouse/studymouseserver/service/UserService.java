@@ -1,6 +1,7 @@
 package com.studymouse.studymouseserver.service;
 
 import com.studymouse.studymouseserver.security.dto.AccessUser;
+import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.user.UserRepository;
 import com.studymouse.studymouseserver.user.dto.UserInfoResDto;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final AccessUserManager accessUserManager;
 
     @Transactional
     public void save(UserReqDto userReqDto) {
@@ -57,5 +59,12 @@ public class UserService {
         }
 
         return new AccessUser(findUser.get());
+    }
+
+    public User getNowAccessUser() {
+        String email = accessUserManager.getAccessUser().getEmail();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+
     }
 }

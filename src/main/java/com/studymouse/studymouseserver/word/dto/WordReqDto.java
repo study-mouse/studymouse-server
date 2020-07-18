@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.word.dto;
 
+import com.studymouse.studymouseserver.user.User;
 import com.studymouse.studymouseserver.word.Word;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,13 @@ public class WordReqDto {
     private String url;
     private List<Description> description;
 
-    public Word toEntity(String descriptionJsonString) {
+    public Word toEntity(String descriptionJsonString, User user) {
         return Word.builder()
                 .english(this.english)
                 .korean(this.korean)
                 .url(this.url)
                 .description(descriptionJsonString)
+                .user(user)
                 .build();
     }
 

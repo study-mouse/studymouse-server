@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +32,7 @@ public class WordController {
                                                      @RequestParam(value = "limit", required = false, defaultValue = "40") final int limit,
                                                      @RequestParam("sort") final SortType sortType,
                                                      @PathVariable final ViewType viewType) {
+
         List<WordResDto> allWordAtPage = wordService.getAllWordAtPage(page, limit, sortType, viewType);
         return ResponseEntity.ok()
                 .body(ResponseDto.of(HttpStatus.OK, ResponseMessage.SUCCESS_WORD_SEARCH, allWordAtPage));

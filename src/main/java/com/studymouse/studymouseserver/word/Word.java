@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.word;
 
+import com.studymouse.studymouseserver.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 public class Word extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "word_id")
     private Long id;
 
     private String english;
@@ -24,6 +26,10 @@ public class Word extends BaseTimeEntity{
     private String description;
 
     private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Setter
     @Builder.Default
