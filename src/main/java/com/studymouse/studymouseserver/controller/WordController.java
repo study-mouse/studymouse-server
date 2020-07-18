@@ -78,10 +78,10 @@ public class WordController {
         return ResponseEntity.ok().body(ResponseDto.of(HttpStatus.OK, SUCCESS_WORD_DELETE));
     }
 
-    @GetMapping("mailTest")
+    @GetMapping("mailWordTest")
     public @ResponseBody
-    ResponseEntity<Map<String, List<WordResDto>>> mailWords() {
-        Map<String, List<WordResDto>> allWordBetweenDate = wordService.getAllWordBetweenDate();
+    ResponseEntity<?> mailWords() {
+        List<MailResponseDto> allWordBetweenDate = wordService.getAllWordBetweenDate();
         return ResponseEntity.ok().body(allWordBetweenDate);
     }
 

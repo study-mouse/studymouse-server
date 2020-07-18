@@ -44,7 +44,7 @@ public class WordRepositoryImpl implements WordRepositoryCustom {
         return queryFactory.selectFrom(word)
                 .where(word.archiveTag.eq(ArchiveTag.NOT_ARCHIVE))
                 .where(word.createdDate.between(startDate, endDate))
-                .limit(3)
+                .limit(4)
                 .fetch();
     }
 }

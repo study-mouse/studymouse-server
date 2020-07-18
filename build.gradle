@@ -45,7 +45,6 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation 'org.springframework.security:spring-security-test'
-	compile group: 'org.webjars', name: 'bootstrap', version: '4.5.0'
 
 }
 

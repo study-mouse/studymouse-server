@@ -1,5 +1,6 @@
 package com.studymouse.studymouseserver.controller;
 
+import com.studymouse.studymouseserver.security.LoginUser;
 import com.studymouse.studymouseserver.security.dto.AccessUser;
 import com.studymouse.studymouseserver.security.store.AccessUserManager;
 import com.studymouse.studymouseserver.service.UserService;
@@ -15,13 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final AccessUserManager accessUserManager;
 
     @GetMapping("push")
     public @ResponseBody
-    ResponseEntity<Boolean> togglePushMail() {
-        AccessUser accessUser = accessUserManager.getAccessUser();
-
+    ResponseEntity<Boolean> togglePushMail(@LoginUser AccessUser accessUser) {
         boolean toggleResult = userService.togglePushMail(accessUser.getEmail());
 
         return ResponseEntity.ok(toggleResult);
@@ -29,9 +27,7 @@ public class UserController {
 
     @GetMapping("")
     public @ResponseBody
-    ResponseEntity<AccessUser> userMain() {
-        AccessUser accessUser = accessUserManager.getAccessUser();
-
+    ResponseEntity<AccessUser> userMain(@LoginUser AccessUser accessUser) {
         return ResponseEntity.ok(accessUser);
     }
 }
