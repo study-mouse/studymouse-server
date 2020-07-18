@@ -27,19 +27,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
-
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
 	compile('com.h2database:h2')
-
-	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.5.0'
-	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.5.0'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
