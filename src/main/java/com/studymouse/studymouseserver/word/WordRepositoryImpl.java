@@ -2,8 +2,6 @@ package com.studymouse.studymouseserver.word;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.studymouse.studymouseserver.user.User;
-import com.studymouse.studymouseserver.util.MailDates;
-import com.studymouse.studymouseserver.util.TimeUtil;
 import com.studymouse.studymouseserver.word.dto.SortType;
 import lombok.RequiredArgsConstructor;
 
@@ -44,9 +42,9 @@ public class WordRepositoryImpl implements WordRepositoryCustom {
     }
 
     @Override
-    public List<Word> findAllMailWords(User accessUser, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Word> findAllMailWords(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
         return queryFactory.selectFrom(word)
-                .where(user.id.eq(accessUser.getId()))
+                .where(user.id.eq(userId))
                 .where(word.archiveTag.eq(ArchiveTag.NOT_ARCHIVE))
                 .where(word.createdDate.between(startDate, endDate))
                 .limit(4)

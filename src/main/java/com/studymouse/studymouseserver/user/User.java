@@ -29,7 +29,7 @@ public class User {
     private String picture;
 
     @Column
-    private boolean isPushMail = false;
+    private boolean pushMail = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -60,14 +60,14 @@ public class User {
     }
 
     public boolean togglePushMail() {
-        return isPushMail ? disablePushMail() : enablePushMail();
+        return pushMail ? disablePushMail() : enablePushMail();
     }
 
     private boolean enablePushMail() {
-        return this.isPushMail = true;
+        return this.pushMail = true;
     }
 
     private boolean disablePushMail() {
-        return this.isPushMail = false;
+        return this.pushMail = false;
     }
 }

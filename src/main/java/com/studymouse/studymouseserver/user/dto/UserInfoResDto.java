@@ -10,7 +10,7 @@ public class UserInfoResDto {
     private String name;
     private String email;
     private String picture;
-    private boolean isEnablePushMail;
+    private Boolean isEnablePushMail;
 
     public UserInfoResDto(final User user) {
         this.name = user.getName();

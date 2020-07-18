@@ -20,6 +20,6 @@ public interface WordRepositoryCustom {
 
     List<Word> findAllByDate(User user, LocalDateTime startDate, LocalDateTime finishDate, ArchiveTag archiveTag);
 
-    List<Word> findAllMailWords(User user, LocalDateTime startDate, LocalDateTime endDate);
+    List<Word> findAllMailWords(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
 }

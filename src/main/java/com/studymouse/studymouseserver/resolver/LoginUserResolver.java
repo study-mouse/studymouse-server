@@ -14,6 +14,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 @Component
 public class LoginUserResolver implements HandlerMethodArgumentResolver {
+
     private final AccessUserManager accessUserManager;
 
     @Override

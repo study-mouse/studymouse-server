@@ -21,7 +21,7 @@ class MailServiceTest {
 
     @Test
     void mailSend() throws MessagingException {
-        mailService.sendSimpleMessage("mor2222@naver.com");
+//        mailService.sendSimpleMessage("mor2222@naver.com");
     }
 
 }
