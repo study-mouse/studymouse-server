@@ -3,10 +3,40 @@ Study Mouse의 Java Spring Server 저장소 입니다.
 ### Run Ainize
 
 [![Run on Ainize](https://ainize.ai/static/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=github.com/study-mouse/studymouse-server)
-
 ### API
 
-[swagger link](http://192.168.219.111:8080/swagger-ui.html)
+https://studymouse-mjung1798.endpoint.ainize.ai/swagger-ui.html
+
+### Build
+
+```shell
+# build 이전에 database & security & mail push 설정 필요.
+docker build -t [docker_hub_id]/[docker_hub_repo_name]
+docker push [docker_hub_id]/[docker_hub_repo_name]
+```
+
+필요한 credential 정보
+
+```properties
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: [jdbc url]
+    username: [database name]
+    password: [database password]
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: [gmail username]
+    password: [gmail password]
+  security:
+      oauth2:
+        client:
+          registration:
+            google:
+              client-id: [googel client-id]
+              client-secret: [google client-secret]
+```
 
 
 ----------------------------------------
@@ -27,7 +57,7 @@ Study Mouse의 Java Spring Server 저장소 입니다.
 
 ## Server Architecture
 
-![image](https://user-images.githubusercontent.com/34976178/87865630-ceda5c00-c9b2-11ea-8bfa-3c488872ee2c.png)
+![image](https://user-images.githubusercontent.com/34976178/87866475-22ea3e00-c9bd-11ea-88c7-c23854ca6d5f.png)
 
 ### Develop Environment
 
