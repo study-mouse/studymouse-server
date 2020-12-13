@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<body>
+
+<div style="width:100%">
+
+    <img style="width: 100%;"
+         src="https://user-images.githubusercontent.com/26458200/87846370-5b7d0f80-c90a-11ea-9042-8d51b6b4a028.png"
+         class="logo_back"/>
+
+    <div style="margin: 2rem;">
+        <p style="text-align: center">안녕하세요, 스터디마우스입니다.</p>
+        <p style="text-align: center">차마 외우지 못한 단어들을 살펴볼까요?</p>
+    </div>
+
+    <div style="margin-bottom: 2rem;" th:each="data: ${list}">
+        <div>
+            <h3 th:text="${data.time}"></h3>
+        </div>
+        <table style="width: 100%;">
+            <tbody>
+            <tr>
+                <td th:each="card: ${data.smallWordCards}" style="float: left;
+            width: 17%;
+            padding: 15px 16px;
+            height: fit-content;
+            margin: 1rem;
+            border-radius: 20px;
+            border: solid 1px #4d1f8c;
+            background-color: rgba(237, 237, 237, 0.56);">
+                    <p th:text="${card.english}" style="font-weight: bold; font-size: larger;"></p>
+                    <p th:text="${card.korea}" style="font-size: medium"></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div align="center" style="margin: 5rem;">
+        <a href="http://www.naver.com" rel="noopener noreferrer" target="_blank">
+            <img style="height: 60px; width: auto;"
+                 src="https://user-images.githubusercontent.com/26458200/87847719-448fea80-c915-11ea-9fa5-887dff5a0414.png">
+        </a>
+    </div>
+
+    <div style="text-align: center">
+        <h3>스터디 마우스</h3>
+        <a href="mailto: studymouse.master@gmail.com">studymouse.master@gmail.com</a>
+        <p>이메일을 더이상 받고싶지 않다면</p>
+        <a href="http://naver.com">수신거부 Unsubscribe</a>
+    </div>
+
+</div>
+
+</body>
+</html>
